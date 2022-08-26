@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <!--Add my gmail api script file-->
+    <script type="text/javascript" src="script.js"></script>
+    <style>
+        * {
+            font-family: Montserrat;
+            color: #6F7376;
+        }
+
+        textarea {
+            outline: none;
+            resize: none;
+            border: none !important;
+            background-color: #F1F3F5 !important;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            border-radius: 15px !important;
+        }
+
+        textarea::placeholder {
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            color: #838384;
+        }
+
+        textarea:focus::-webkit-input-placeholder {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        button {
+            border: none;
+            color: white;
+            background-color: #F5A524;
+            width: 100%;
+            max-width: 200px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #ce8614;
+        }
+
+        table {
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
+            border-collapse: separate;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            padding: 15px;
+            border-spacing: 0px;
+            width: 100%;
+        }
+
+        th {
+            background-color: #F1F3F5;
+            padding: 10px;
+            font-size: 14px !important;
+        }
+
+        th:first-child {
+            border-radius: 10px 0px 0px 10px;
+        }
+
+        th:last-child {
+            border-radius: 0px 10px 10px 0px;
+        }
+
+        td {
+            padding: 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        #button-wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 15px;
+            padding-top: 30px;
+        }
+
+        #order-display {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 30px;
+            padding-top: 50px;
+        }
+
+        @media screen and (max-width:980px) {
+            #order-display {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media screen and (max-width:560px) {
+            #order-display {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+        }
+
+        .no-email {
+            background-color: #FDD8E5;
+            color: #F53D7D;
+            padding: 5px;
+            border-radius: 5px;
+            max-width: 80px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .cancelled {
+            background-color: #FDEFD8;
+            color: #D9AE6A;
+            padding: 5px;
+            border-radius: 5px;
+            max-width: 80px;
+            margin: auto;
+        }
+
+        .shipped {
+            background-color: #DAFBE8;
+            color: #25AC60;
+            padding: 5px;
+            border-radius: 5px;
+            max-width: 80px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>BozoChat Order Tool</h1>
+
+    <!--List Content-->
+    <!-- <pre id="content" style="white-space: pre-wrap;"></pre> -->
+
+    <!--List Inbox Content-->
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <!--Text Box For Order Numbers-->
+    <textarea id="orderNumTextArea" placeholder="Enter your Order Numbers"
+        style="width: 100%; height: 200px; padding: 12px 20px; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; background-color: #f8f8f8; font-size: 16px;"></textarea>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <div id="button-wrapper">
+        <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
+        <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+    </div>
+
+    <!--Order Numbers to Display-->
+    <div id="order-display">
+        <div>
+            <table id="NoEmail">
+                <tr>
+                    <th>Order Number</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>AYS11495961</td>
+                    <td>
+                        <div class="no-email">No Email</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11489918</td>
+                    <td>
+                        <div class="no-email">No Email</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11526647</td>
+                    <td>
+                        <div class="no-email">No Email</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table id="Cancelled">
+                <tr>
+                    <th>Order Number</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>AYS11531561</td>
+                    <td>
+                        <div class="cancelled">Cancelled</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11541076</td>
+                    <td>
+                        <div class="cancelled">Cancelled</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table id="Shipped">
+                <tr>
+                    <th>Order Number</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>AYS11382507 </td>
+                    <td>
+                        <div class="shipped">Shipped</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11385261</td>
+                    <td>
+                        <div class="shipped">Shipped</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11403848</td>
+                    <td>
+                        <div class="shipped">Shipped</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AYS11409888</td>
+                    <td>
+                        <div class="shipped">Shipped</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+</body>
+
+</html>
